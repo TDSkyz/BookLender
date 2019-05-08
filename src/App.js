@@ -14,9 +14,9 @@ function App() {
         <Navbar />
         <div>
           <Route exact path="/" component={Home} />
-          <Route path="/shop" component={Shop} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup}/>
+          <Route exact path="/shop" component={Shop} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup}/>
         </div>
         <Footer></Footer>
       </BrowserRouter>
