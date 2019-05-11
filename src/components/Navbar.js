@@ -1,8 +1,34 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default class Navbar extends Component {
+  constructor(props) {
+    super(props)
+    this.handleLogout = this.handleLogout.bind(this)
+  }
+
+  handleLogout(event) {
+    localStorage.clear();
+    window.location.reload();
+
+  }
+
   render() {
+    const isLoggedIn = localStorage.getItem('firstname');
+    let username;
+    let logout;
+    if (isLoggedIn) {
+      username = <li><a>Welcome {localStorage.getItem('firstname')}</a></li>
+      logout = (
+        <li>
+          <a href="/login" onClick={this.handleLogout} title="Sign Out">
+            <span className="fa fa-sign-out nav-icon" aria-hidden="true" />
+          </a>
+        </li>)
+    };
+
+
+
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
         <div className="main-nav">
@@ -34,11 +60,13 @@ export default class Navbar extends Component {
                 <li>
                   <a href="about">About us</a>
                 </li>
+                {username}
                 <li>
                   <a href="login" title="SignIn & SignUp">
                     <span className="fa fa-user nav-icon" aria-hidden="true" />
                   </a>
                 </li>
+                {logout}
               </ul>
 
 
@@ -64,17 +92,17 @@ export default class Navbar extends Component {
               {/* shopping cart */}
               <div className="cart-mainf">
                 <div className="chrcart chrcart2 cart cart box_1">
-                  <form action="#" method="post" className="last">
-                    <input type="hidden" name="cmd" defaultValue="_cart" />
-                    <input type="hidden" name="display" defaultValue={1} />
+                  <a href="/orders">
                     <button className="top_chr_cart" type="submit" name="submit" value>
                       <i className="fa fa-cart-arrow-down" aria-hidden="true" />
                     </button>
-                  </form>
+                  </a>
+
                 </div>
               </div>
               {/* //shopping cart ends here */}
             </div>
+
             {/* /.navbar-collapse */}
             <div className="clearfix" />
           </div>

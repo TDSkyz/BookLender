@@ -6,17 +6,27 @@ const app = express();
 const dbConfig = require('./server/config/dbConfig');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+global.__basedir = __dirname;
+
+
 
 app
+  .use(cors())
   .use(favicon(__dirname + '/build/favicon.ico'))
   .use(express.static(__dirname))
   .use(express.static(path.join(__dirname, 'build')))
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: false }));
 
+
 //router
-var user = require('./server/routers/userRouter');
-app.use('/api/user', user);
+var userRouter = require('./server/routers/userRouter');
+app.use('/api/user', userRouter);
+var bookRouter = require('./server/routers/bookRouter');
+app.use('/api', bookRouter);
+var orderRouter = require('./server/routers/orderRouter');
+app.use('/api', orderRouter);
 
 app.get('/ping', function (req, res) {
   return res.send('pong');
@@ -38,6 +48,4 @@ mongoose.connect(process.env.CUSTOMCONNSTR_MyConnectionString || dbConfig.url, {
   console.log('Could not connect to the database. Exiting now...', err);
   process.exit();
 });
-
-
 

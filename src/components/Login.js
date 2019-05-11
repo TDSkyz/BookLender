@@ -1,6 +1,42 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../helper/baseUrl';
+
 export default class Login extends Component {
+
+  constructor(props) {
+    super(props)
+    this.handleLogin = this.handleLogin.bind(this)
+  }
+
+  UNSAFE_componentWillMount() {
+    if (localStorage.getItem('firstname')) {
+      return this.props.history.push('/shop');
+    }
+  }
+
+  handleLogin(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    console.log(data.get('email'));
+
+    axiosInstance.post('/user/login', {
+      email: data.get('email'),
+      password: data.get('password')
+    }).then((response) => {
+      if (response.data.success) {
+        console.log('test')
+        localStorage.setItem('userId', response.data.userId);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('firstname', response.data.firstName);
+        localStorage.setItem('isAdmin', response.data.isAdmin);
+        window.location.reload();
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
   render() {
     return (
       <div>
@@ -28,25 +64,25 @@ export default class Login extends Component {
             <div id="loginbox" style={{ marginTop: '30px' }} className="mainbox  loginbox">
               <div className="panel panel-info">
                 <div className="panel-heading">
-                  <div className="panel-title">Sign In</div>
+                  <div className="panel-title">Log In</div>
                   <div className="fpassword">
                     <Link to="/signup" id="signinlink" >Sign Up</Link>
                   </div>
                 </div>
                 <div style={{ paddingTop: '30px' }} className="panel-body">
                   <div style={{ display: 'none' }} id="login-alert" className="alert alert-danger col-sm-12" />
-                  <form id="loginform" className="form-horizontal" action="#" method="post">
+                  <form onSubmit={this.handleLogin} className="form-horizontal">
                     <div style={{ marginBottom: '25px' }} className="input-group">
                       <span className="input-group-addon">
                         <i className="glyphicon glyphicon-user" />
                       </span>
-                      <input id="login-username" type="text" className="form-control" name="username" placeholder="username or email" required />
+                      <input type="email" className="form-control" name="email" placeholder="email" required />
                     </div>
                     <div style={{ marginBottom: '25px' }} className="input-group">
                       <span className="input-group-addon">
                         <i className="glyphicon glyphicon-lock" />
                       </span>
-                      <input id="login-password" type="password" className="form-control" name="password" placeholder="password" required />
+                      <input type="password" className="form-control" name="password" placeholder="password" required />
                     </div>
                     <div className="input-group">
                       <div className="checkbox">
@@ -58,13 +94,13 @@ export default class Login extends Component {
                     <div style={{ marginTop: '10px' }} className="form-group">
                       {/* Button */}
                       <div className="col-sm-12 controls">
-                        <button id="btn-login" href="#" className="btn btn-success">Login </button>
+                        <button className="btn btn-success">Login </button>
                       </div>
                     </div>
                     <div className="form-group">
                       <div className="col-md-12 control">
                         <div style={{ borderTop: '1px solid#888', paddingTop: '15px', fontSize: '85%' }}>
-                          For get your password ? 
+                          For get your password ?
                         <Link to="/signup">
                             Click Here
                         </Link>

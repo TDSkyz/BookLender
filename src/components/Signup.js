@@ -1,6 +1,42 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../helper/baseUrl';
+
 export default class Login extends Component {
+
+  constructor(props) {
+    super(props)
+    this.handleSignup = this.handleSignup.bind(this)
+  }
+
+  UNSAFE_componentWillMount() {
+    if (localStorage.getItem('firstname')) {
+      return this.props.history.push('/shop');
+    }
+  }
+
+  handleSignup(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    console.log(data.get('email'));
+    console.log(data.get('firstname'));
+    console.log(data.get('lastname'));
+    console.log(data.get('password'));
+    axiosInstance.post('/user/register', {
+      email: data.get('email'),
+      firstName: data.get('firstname'),
+      lastName: data.get('lastname'),
+      password: data.get('password')
+    }).then((response) => {
+      alert(response.data.message)
+      if (response.data.success) {
+        this.props.history.push('/login');
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
   render() {
     return (
       <div>
@@ -25,7 +61,7 @@ export default class Login extends Component {
                 <Link to="/signup">Sign Up</Link>
               </span>
             </h4>
-            <div id="signupbox" style={{ marginTop: '50px' }} className="mainbox loginbox">
+            <div onSubmit={this.handleSignup} id="signupbox" style={{ marginTop: '50px' }} className="mainbox loginbox">
               <div className="panel panel-info">
                 <div className="panel-heading">
                   <div className="panel-title">Sign Up</div>
@@ -38,7 +74,7 @@ export default class Login extends Component {
                     <div className="form-group">
                       <label className="col-md-3 col-sm-3 col-xs-3 control-label">Email</label>
                       <div className="col-md-9 col-sm-9 col-xs-9">
-                        <input type="text" className="form-control" name="email" placeholder="Email Address" required />
+                        <input type="email" className="form-control" name="email" placeholder="Email Address" required />
                       </div>
                     </div>
                     <div className="form-group">
@@ -56,14 +92,15 @@ export default class Login extends Component {
                     <div className="form-group">
                       <label className="col-md-3 col-sm-3 col-xs-3 control-label">Password</label>
                       <div className="col-md-9 col-sm-9 col-xs-9">
-                        <input type="password" className="form-control" name="passwd" placeholder="Password" required />
+                        <input type="password" className="form-control" name="password" placeholder="Password" required />
                       </div>
                     </div>
                     <div className="form-group">
                       {/* Button */}
                       <div className="signup-btn">
-                        <button id="btn-signup" type="button" className="btn btn-info">
-                          <i className="icon-hand-right" /> &nbsp; Sign Up</button>
+                        <div className="col-sm-12 controls">
+                          <button className="btn btn-success">Login </button>
+                        </div>
                       </div>
                     </div>
                     <div style={{ borderTop: '1px solid #999', paddingTop: '20px' }} className="form-group">

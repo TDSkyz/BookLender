@@ -1,7 +1,128 @@
 import React, { Component } from 'react';
+import axiosInstance from '../helper/baseUrl';
+import { Route, Link } from 'react-router-dom';
 
 export default class Shop extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
+  }
+
+  handleDelete(event) {
+    console.log('test');
+    // axiosInstance
+    //   .delete('/books')
+    //   .then((response) => {
+
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+  }
+
+  componentDidMount() {
+    axiosInstance
+      .get('/books')
+      .then((response) => {
+        this.setState((prevState, props) => {
+          return {
+            data: response.data.data
+          }
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
   render() {
+    if (localStorage.getItem('isAdmin')) {
+      var addBook = (
+        <div className="col-md-3 product-men">
+          <div className="product-chr-info chr">
+            <div className="thumbnail">
+              <Link to={"/addbook"}>
+                <img src="/images/Add.jpg" resizeMode="contain" width="250" height="320" alt="" />
+              </Link>
+
+            </div>
+            <div className="caption">
+              <h4>You Can Add More Book Here</h4>
+            </div>
+          </div>
+        </div>
+      );
+      var listBooks = this.state.data.map(book => (
+        <div key={book._id} className="col-md-3 product-men">
+          <div className="product-chr-info chr">
+            <div className="thumbnail">
+              <Link to={"/shop/" + book._id}>
+                <img src={book.image} alt={book.image} />
+              </Link>
+
+            </div>
+            <div className="caption">
+              <h4>{book.name}</h4>
+              <p>{book.author}</p>
+              <div className="matrlf-mid">
+                <ul className="price-list">
+                  <li>{book.price}/day</li>
+                  <li></li>
+                </ul>
+                <div className="clearfix"> </div>
+              </div>
+              <a href={"/shop/" + book._id} >
+                <button className="chr-cart pchr-cart">Edit
+              <i className="fa fa-pencil-square-o" aria-hidden="true" />
+                </button>
+              </a>
+              <a href={"/delete/" + book._id} >
+                <button className="chr-cart pchr-cart">delete
+              <i className="fa fa-trash" aria-hidden="true" />
+                </button>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      ));
+    } else {
+      listBooks = this.state.data.map(book => (
+        <div key={book._id} className="col-md-3 product-men">
+          <div className="product-chr-info chr">
+            <div className="thumbnail">
+              <Link to={"/shop/" + book._id}>
+                <img src={book.image} alt={book.image} />
+              </Link>
+
+            </div>
+            <div className="caption">
+              <h4>{book.name}</h4>
+              <p>{book.author}</p>
+              <div className="matrlf-mid">
+                <ul className="price-list">
+                  <li>{book.price}/day</li>
+                  <li></li>
+                </ul>
+                <div className="clearfix"> </div>
+              </div>
+              <a href={"/shop/" + book._id} >
+                <button className="chr-cart pchr-cart">See More Details
+              <i className="fa fa-plus" aria-hidden="true" />
+                </button>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      ));
+    }
+
+
+
     return (
       <div>
         <div className="banner-bg-inner">
@@ -50,183 +171,8 @@ export default class Shop extends Component {
                 {/* product-sec1 */}
                 <div className="product-sec1">
                   {/* row1*/}
-                  <div className="col-md-3 product-men">
-                    <div className="product-chr-info chr">
-                      <div className="thumbnail">
-                        <a href="single_product.html">
-                          <img src="images/lib8.jpg" alt />
-                        </a>
-                      </div>
-                      <div className="caption">
-                        <h4>be creative</h4>
-                        <p>Clayton Barton</p>
-                        <div className="matrlf-mid">
-                          <ul className="rating">
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star gray-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star gray-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                          </ul>
-                          <ul className="price-list">
-                            <li>$ 100.00</li>
-                            <li>
-                              $200.00
-                          </li>
-                          </ul>
-                          <div className="clearfix"> </div>
-                        </div>
-                        <form action="#" method="post">
-                          <input type="hidden" name="cmd" defaultValue="_cart" />
-                          <input type="hidden" name="add" defaultValue={1} />
-                          <input type="hidden" name="chr_item" defaultValue="Book1" />
-                          <input type="hidden" name="amount" defaultValue={100.00} />
-                          <button type="submit" className="chr-cart pchr-cart">Add to cart
-                          <i className="fa fa-cart-plus" aria-hidden="true" />
-                          </button>
-                          <a href="#" data-toggle="modal" data-target="#myModal1" />
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-3 product-men">
-                    <div className="product-chr-info chr">
-                      <div className="thumbnail">
-                        <a href="single_product.html">
-                          <img src="images/lib7.jpg" alt />
-                        </a>
-                      </div>
-                      <div className="caption">
-                        <h4>marketing</h4>
-                        <p>Niel Fontine</p>
-                        <div className="matrlf-mid">
-                          <ul className="rating">
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star gray-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                          </ul>
-                          <ul className="price-list">
-                            <li>$ 200.00</li>
-                            <li>
-                              $250.00
-                          </li>
-                          </ul>
-                          <div className="clearfix"> </div>
-                        </div>
-                        <form action="#" method="post">
-                          <input type="hidden" name="cmd" defaultValue="_cart" />
-                          <input type="hidden" name="add" defaultValue={1} />
-                          <input type="hidden" name="chr_item" defaultValue="Book2" />
-                          <input type="hidden" name="amount" defaultValue={200.00} />
-                          <button type="submit" className="chr-cart pchr-cart">Add to cart
-                          <i className="fa fa-cart-plus" aria-hidden="true" />
-                          </button>
-                          <a href="#" data-toggle="modal" data-target="#myModal1" />
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-3 product-men">
-                    <div className="product-chr-info chr">
-                      <div className="thumbnail">
-                        <a href="single_product.html">
-                          <img src="images/lib3.jpg" alt />
-                        </a>
-                      </div>
-                      <div className="caption">
-                        <h4>work from home</h4>
-                        <p>Jose portilla</p>
-                        <div className="matrlf-mid">
-                          <ul className="rating">
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <span className="fa fa-star yellow-star" aria-hidden="true" />
-                              </a>
-                            </li>
-                          </ul>
-                          <ul className="price-list">
-                            <li>$ 80.00</li>
-                            <li>
-                              $100.00
-                          </li>
-                          </ul>
-                          <div className="clearfix"> </div>
-                        </div>
-                        <form action="#" method="post">
-                          <input type="hidden" name="cmd" defaultValue="_cart" />
-                          <input type="hidden" name="add" defaultValue={1} />
-                          <input type="hidden" name="chr_item" defaultValue="Book3" />
-                          <input type="hidden" name="amount" defaultValue={80.00} />
-                          <button type="submit" className="chr-cart pchr-cart">Add to cart
-                          <i className="fa fa-cart-plus" aria-hidden="true" />
-                          </button>
-                          <a href="#" data-toggle="modal" data-target="#myModal1" />
-                        </form>
-                      </div>
-                    </div>
-                  </div>
+                  {addBook}
+                  {listBooks}
                   {/* //row1 */}
                   <div className="clearfix" />
                 </div>
@@ -237,6 +183,7 @@ export default class Shop extends Component {
             <div className="clearfix" />
           </div>
         </div>
+
       </div>
 
 
