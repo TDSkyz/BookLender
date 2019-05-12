@@ -17,10 +17,11 @@ export default class AddBook extends Component {
       }
     })
     .then((response) => {
-      if (response.data.data) {
-        alert("Add Success, Return To Shop")
-        this.props.history.push('/shop');
-      }
+      console.log(response);
+      // if (response.data.data) {
+      //   alert("Add Success, Return To Shop")
+      //   this.props.history.push('/shop');
+      // }
     })
     .catch((error) => {
       console.log(error);
