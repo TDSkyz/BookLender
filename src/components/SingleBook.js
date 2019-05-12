@@ -29,10 +29,19 @@ export default class SingleBook extends Component {
       user: localStorage.getItem('userId'),
       book: this.state.data._id,
       days: this.state.days
-    }).then((response) => {
-      alert("Your Order Is Successful, You Can Check On Cart");
-      this.props.history.push('/orders');
-    }).catch((error) => {
+    }, { 
+      headers: { 
+        Authorization: localStorage.getItem('token') 
+      } 
+    })
+    .then((response) => {
+      console.log(response);
+      if (response.data.success) {
+        alert("Your Order Is Successful, You Can Check On Cart");
+        this.props.history.push('/orders');
+      }
+    })
+    .catch((error) => {
       console.log(error);
     })
   }

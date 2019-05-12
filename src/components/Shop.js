@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axiosInstance from '../helper/baseUrl';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default class Shop extends Component {
 
@@ -11,16 +11,23 @@ export default class Shop extends Component {
     };
   }
 
-  handleDelete(event) {
-    console.log('test');
-    // axiosInstance
-    //   .delete('/books')
-    //   .then((response) => {
-
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
+  handleDelete(id, event) {
+    axiosInstance
+      .delete('/books/' + id, 
+      {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
+      .then((response) => {
+        if (response.data.success === true) {
+          alert('Delete Succesful');
+          this.componentDidMount();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 
   componentDidMount() {
@@ -39,7 +46,10 @@ export default class Shop extends Component {
   }
 
   render() {
-    if (localStorage.getItem('isAdmin')) {
+    let listBooks
+    var isAdmin = localStorage.getItem('isAdmin');
+    if (isAdmin === "true") {
+      console.log('test')
       var addBook = (
         <div className="col-md-3 product-men">
           <div className="product-chr-info chr">
@@ -55,7 +65,7 @@ export default class Shop extends Component {
           </div>
         </div>
       );
-      var listBooks = this.state.data.map(book => (
+      listBooks = this.state.data.map(book => (
         <div key={book._id} className="col-md-3 product-men">
           <div className="product-chr-info chr">
             <div className="thumbnail">
@@ -74,17 +84,14 @@ export default class Shop extends Component {
                 </ul>
                 <div className="clearfix"> </div>
               </div>
-              <a href={"/shop/" + book._id} >
+              <a href={"/edit/" + book._id} >
                 <button className="chr-cart pchr-cart">Edit
               <i className="fa fa-pencil-square-o" aria-hidden="true" />
                 </button>
               </a>
-              <a href={"/delete/" + book._id} >
-                <button className="chr-cart pchr-cart">delete
+              <button onClick={event => this.handleDelete(book._id, event)} className="chr-cart pchr-cart">delete
               <i className="fa fa-trash" aria-hidden="true" />
-                </button>
-              </a>
-
+              </button>
             </div>
           </div>
         </div>
@@ -114,7 +121,6 @@ export default class Shop extends Component {
               <i className="fa fa-plus" aria-hidden="true" />
                 </button>
               </a>
-
             </div>
           </div>
         </div>
@@ -183,10 +189,7 @@ export default class Shop extends Component {
             <div className="clearfix" />
           </div>
         </div>
-
       </div>
-
-
     )
   }
 }

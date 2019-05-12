@@ -27,6 +27,7 @@ export default class Login extends Component {
       if (response.data.success) {
         console.log('test')
         localStorage.setItem('userId', response.data.userId);
+
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('firstname', response.data.firstName);
         localStorage.setItem('isAdmin', response.data.isAdmin);

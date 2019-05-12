@@ -11,6 +11,7 @@ export default class CheckOrders extends Component {
   }
 
   componentDidMount() {
+    console.log(localStorage.getItem('userId'));
     axiosInstance
       .get('/orders/user/' + localStorage.getItem('userId'))
       .then((response) => {

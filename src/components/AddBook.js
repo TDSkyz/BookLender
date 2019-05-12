@@ -11,12 +11,18 @@ export default class AddBook extends Component {
   handleAddBook(event) {
     event.preventDefault();
     const data = new FormData(event.target);
-    axiosInstance.post('/books', data).then((response) => {
-      if(response.data.data){
+    axiosInstance.post('/books', data, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
+    .then((response) => {
+      if (response.data.data) {
         alert("Add Success, Return To Shop")
         this.props.history.push('/shop');
       }
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.log(error);
     })
   }

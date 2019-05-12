@@ -9,6 +9,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 global.__basedir = __dirname;
 
+//import model
+require('./server/models/bookModel');
+require('./server/models/orderModel');
+require('./server/models/userModel');
+
 
 
 app

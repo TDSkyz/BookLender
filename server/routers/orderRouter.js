@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var orderController = require('../controllers/orderController');
+var authMiddleware = require('../middlewares/authMiddleware');
+
 router
   .route('/orders')
   .get(orderController.findAll)
-  .post(orderController.create);
+  .post(authMiddleware.isAuth, orderController.create);
 
 router
   .route('/orders/:orderId')
@@ -14,5 +16,5 @@ router
 
 router
   .route('/orders/user/:userId')
-  .get(orderController.findOrdersByUserId)  
+  .get(orderController.findOrdersByUserId)
 module.exports = router;

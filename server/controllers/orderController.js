@@ -1,5 +1,6 @@
-const Order = require('../models/OrderModel');
-
+// const Order = require('../models/OrderModel');
+const mongoose = require('mongoose');
+const Order = mongoose.model('Order');
 exports.create = async (req, res) => {
   try {
     if (!req.body) {
@@ -106,7 +107,7 @@ exports.delete = async (req, res) => {
 
 exports.findOrdersByUserId = async (req, res) => {
   try {
-    const order = await Order.find({ user: req.params.userId}).populate('book');
+    const order = await Order.find({ user: req.params.userId }).populate('book');
     if (!order) {
       return res.json({
         success: false,
@@ -127,4 +128,8 @@ exports.findOrdersByUserId = async (req, res) => {
       message: "Error retrieving Order with id " + req.params.userId
     });
   }
+
 };
+
+
+

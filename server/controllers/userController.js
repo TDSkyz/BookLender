@@ -2,7 +2,8 @@
 
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
-var User = require('../models/userModel');
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
 var { jwtSecret } = require('../config/jwtConfig');
 
 exports.findAll = async (req, res) => {

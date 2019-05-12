@@ -1,4 +1,8 @@
-const Book = require('../models/bookModel');
+// const Book = require('../models/bookModel');
+// // const Order = require('../models/orderModel');
+const mongoose = require('mongoose');
+const Book = mongoose.model('Book');
+const Order = mongoose.model('Order');
 const sharp = require('sharp');
 var fs = require('fs');
 
@@ -78,6 +82,7 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
+    console.log(req.body);
     const book = await Book.findById(req.params.bookId);
     if (req.body._id) {
       delete req.body._id;
@@ -102,12 +107,14 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
+    await Order.deleteMany({ book: req.params.bookId });
     await Book.findByIdAndRemove(req.params.bookId);
     return res.json({
       success: true,
       data: true
     })
   } catch (err) {
+    console.log(err);
     if (err.kind === 'ObjectId' || err.name === 'NotFound') {
       return res.send({
         message: "Book not found with id " + req.params.bookId

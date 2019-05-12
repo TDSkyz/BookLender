@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bookController = require('../controllers/bookController');
+var authMiddleware = require('../middlewares/authMiddleware');
 var path = require('path');
 
 const multer = require('multer')
@@ -17,14 +18,13 @@ const upload = multer({ storage: storage })
 router
   .route('/books')
   .get(bookController.findAll)
-  .post(upload.single('image'), bookController.create);
-
+  .post(upload.single('image'), authMiddleware.isAuth, bookController.create);
 
 router
   .route('/books/:bookId')
   .get(bookController.findOne)
-  .put(bookController.update)
-  .delete(bookController.delete)
+  .put(authMiddleware.isAuth, bookController.update)
+  .delete(authMiddleware.isAuth, bookController.delete)
 
 
 module.exports = router;
