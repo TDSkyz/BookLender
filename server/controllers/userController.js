@@ -22,8 +22,6 @@ exports.findAll = async (req, res) => {
 };
 exports.register = async function (req, res) {
   try {
-    console.log(req.body);
-
     var user = await User.findOne({ 'email': req.body.email });
     if (user) {
       return res.json({

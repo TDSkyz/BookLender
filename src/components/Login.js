@@ -18,8 +18,6 @@ export default class Login extends Component {
   handleLogin(event) {
     event.preventDefault();
     const data = new FormData(event.target);
-    console.log(data.get('email'));
-
     axiosInstance.post('/user/login', {
       email: data.get('email'),
       password: data.get('password')
@@ -32,6 +30,8 @@ export default class Login extends Component {
         localStorage.setItem('firstname', response.data.firstName);
         localStorage.setItem('isAdmin', response.data.isAdmin);
         window.location.reload();
+      } else {
+        alert(response.data.message);
       }
     }).catch((error) => {
       console.log(error);

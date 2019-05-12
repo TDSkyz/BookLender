@@ -45,7 +45,7 @@ app.listen(port, function () {
   console.log('Your node js server is running in port ', port);
 });
 
-mongoose.connect(process.env.CUSTOMCONNSTR_MyConnectionString || dbConfig.url, {
+mongoose.connect( dbConfig.remoteUrl || dbConfig.url, {
   useNewUrlParser: true
 }).then(() => {
   console.log("Successfully connected to the database");
