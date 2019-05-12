@@ -49,7 +49,6 @@ export default class Shop extends Component {
     let listBooks
     var isAdmin = localStorage.getItem('isAdmin');
     if (isAdmin === "true") {
-      console.log('test')
       var addBook = (
         <div className="col-md-3 product-men">
           <div className="product-chr-info chr">
@@ -189,6 +188,7 @@ export default class Shop extends Component {
             <div className="clearfix" />
           </div>
         </div>
+        <img src="/images/lib6"></img>
       </div>
     )
   }
