@@ -30,7 +30,8 @@ exports.create = async (req, res) => {
     await book.save();
     return res.json({
       success: true,
-      data: book
+      data: book,
+      test: req.file.path
     });
   } catch (err) {
     return res.send({
