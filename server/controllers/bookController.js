@@ -16,8 +16,8 @@ exports.create = async (req, res) => {
     }
     sharp(req.file.path)
       .resize(250, 320)
-      .toBuffer().
-      then(data => {
+      .toBuffer()
+      .then(data => {
         fs.writeFileSync(req.file.path, data);
       })
       .catch(err => {
